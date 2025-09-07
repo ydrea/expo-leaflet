@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["ExpoLeafletModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.leaflet.ExpoLeafletModule"]
+  }
+}

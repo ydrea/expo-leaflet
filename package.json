@@ -1,0 +1,44 @@
+{
+  "name": "expo-leaflet",
+  "version": "0.1.0",
+  "description": "use Leaflet map in Expo React Native",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "expo-module build",
+    "clean": "expo-module clean",
+    "lint": "expo-module lint",
+    "test": "expo-module test",
+    "prepare": "expo-module prepare",
+    "prepublishOnly": "expo-module prepublishOnly",
+    "expo-module": "expo-module",
+    "open:ios": "xed example/ios",
+    "open:android": "open -a \"Android Studio\" example/android"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "expo-leaflet",
+    "ExpoLeaflet"
+  ],
+  "repository": "https://github.com/ydrea/expo-leaflet",
+  "bugs": {
+    "url": "https://github.com/ydrea/expo-leaflet/issues"
+  },
+  "author": "ydrea <ydrea.wrld@gmail.com> (ydrea)",
+  "license": "MIT",
+  "homepage": "https://github.com/ydrea/expo-leaflet#readme",
+  
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.6"
+  },
+  "browser": {
+    "./build/ExpoLeafletView.js": "./build/ExpoLeafletView.web.js"
+  },
+  "react-native": {
+    "./build/ExpoLeafletView.js": "./build/ExpoLeafletView.js"
+  }
+}

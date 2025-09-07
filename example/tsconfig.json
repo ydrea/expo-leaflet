@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "expo-leaflet": ["../src/index"],
+      "expo-leaflet/*": ["../src/*"]
+    }
+  }
+}

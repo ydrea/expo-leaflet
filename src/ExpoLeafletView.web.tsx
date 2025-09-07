@@ -210,6 +210,7 @@ const ExpoLeafletView = forwardRef<LeafletMapRef, ExpoLeafletViewProps>(({
   }, [onMapClick]);
 
   return (
+   <> 
     <div
       ref={mapRef}
       style={{
@@ -218,6 +219,7 @@ const ExpoLeafletView = forwardRef<LeafletMapRef, ExpoLeafletViewProps>(({
         ...(style as any)
       }}
     />
+  </>
   );
 });
 

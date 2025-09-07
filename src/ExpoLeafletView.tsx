@@ -12,7 +12,7 @@
 
 import React, { useRef, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
-import { LatLng, MapOptions, MarkerOptions, PolygonOptions, CircleOptions, LeafletMapRef, MapEvent } from './types';
+import { LatLng, MapOptions, MarkerOptions, PolygonOptions, CircleOptions, LeafletMapRef, MapEvent } from './ExpoLeaflet.types';
 
 interface LeafletViewProps {
   options: MapOptions;

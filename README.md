@@ -22,6 +22,6 @@ For [managed](https://docs.expo.dev/archive/managed-vs-bare/) Expo projects, ple
 ### Add the package to your npm dependencies
 
 ```
-npm install expo-leaflet
+<!-- npm install expo-leaflet -->
 ```
 

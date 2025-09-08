@@ -85,3 +85,9 @@ export interface ExpoLeafletViewProps {
   url?: string;
   onLoad?: (event: { nativeEvent: OnLoadEventPayload }) => void;
 }
+// Add this interface definition at the end of the file, before the last closing brace
+export interface ExpoLeafletModuleInterface {
+  PI: number;
+  hello(): string;
+  setValueAsync(value: string): Promise<void>;
+}

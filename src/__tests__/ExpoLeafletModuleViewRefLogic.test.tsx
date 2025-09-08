@@ -1,15 +1,15 @@
+
 import React from 'react';
 import { render } from '@testing-library/react-native';
 
-// Basic WebView mock
-jest.mock('react-native-webview', () => {
-  const { View } = require('react-native');
-  return { WebView: View }; // use View directly
-});
+// Super simple WebView mock - no React.createElement needed
+jest.mock('react-native-webview', () => ({
+  WebView: () => null // Return null or simple component
+}));
 
 import ExpoLeafletView from '../ExpoLeafletView';
 
-describe('ExpoLeafletView Smoke Test', () => {
+describe('ExpoLeafletView Logic', () => {
   const mockOptions = {
     center: { lat: 51.505, lng: -0.09 },
     zoom: 13
@@ -17,18 +17,15 @@ describe('ExpoLeafletView Smoke Test', () => {
 
   it('renders without crashing', () => {
     expect(() => {
-      render(React.createElement(ExpoLeafletView, { options: mockOptions }));
+      render(<ExpoLeafletView options={mockOptions} />);
     }).not.toThrow();
   });
 
-  it('accepts basic props', () => {
+  it('accepts onMapReady callback prop', () => {
     const onMapReady = jest.fn();
     
     expect(() => {
-      render(React.createElement(ExpoLeafletView, { 
-        options: mockOptions, 
-        onMapReady 
-      }));
+      render(<ExpoLeafletView options={mockOptions} onMapReady={onMapReady} />);
     }).not.toThrow();
   });
 });

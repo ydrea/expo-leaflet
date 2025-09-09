@@ -1,3 +1,5 @@
+// withLeaflet.ts
+
 import { ConfigPlugin, withInfoPlist } from '@expo/config-plugins';
 
 const withLeaflet: ConfigPlugin = (config) => {

@@ -5,7 +5,7 @@ export type OnLoadEventPayload = {
 };
 
 export type ExpoLeafletModuleEvents = {
-  onChange: (params: ChangeEventPayload) => void;
+  onChange: (payload: ChangeEventPayload) => void;
 };
 
 export type ChangeEventPayload = {
@@ -63,6 +63,25 @@ export interface MapEvent {
   id?: string;
 }
 
+// Unified view props
+export interface ExpoLeafletViewProps {
+  // Map options
+  options: MapOptions;
+  
+  // Event handlers
+  onMapReady?: () => void;
+  onMapClick?: (event: { nativeEvent: MapEvent }) => void;
+  onMarkerClick?: (event: { nativeEvent: MapEvent }) => void;
+  onLoad?: (event: { nativeEvent: OnLoadEventPayload }) => void;
+  
+  // Styling
+  style?: StyleProp<ViewStyle>;
+  
+  // Standard React Native View props
+  testID?: string;
+  children?: React.ReactNode;
+}
+
 export interface LeafletMapRef {
   setView: (center: LatLng, zoom: number) => void;
   addMarker: (options: MarkerOptions) => string;
@@ -74,18 +93,7 @@ export interface LeafletMapRef {
   fitBounds: (bounds: [LatLng, LatLng]) => void;
 }
 
-// Update the main props to match your implementation
-export interface ExpoLeafletViewProps {
-  options: MapOptions;
-  onMapReady?: () => void;
-  onMapClick?: (event: { nativeEvent: MapEvent }) => void;
-  onMarkerClick?: (event: { nativeEvent: MapEvent }) => void;
-  style?: StyleProp<ViewStyle>;
-  // Keep these for backward compatibility if needed
-  url?: string;
-  onLoad?: (event: { nativeEvent: OnLoadEventPayload }) => void;
-}
-// Add this interface definition at the end of the file, before the last closing brace
+// Module interface
 export interface ExpoLeafletModuleInterface {
   PI: number;
   hello(): string;

@@ -1,9 +1,12 @@
-// Mock the native module to return a testable object
+// Mock the native module with proper typing
 jest.mock('../ExpoLeafletModule', () => {
   const mockModule = {
     PI: Math.PI,
     hello: jest.fn(() => 'Hello world! 👋'),
-    setValueAsync: jest.fn()
+    setValueAsync: jest.fn(),
+    addListener: jest.fn(() => ({ remove: jest.fn() })),
+    removeListeners: jest.fn(),
+    injectJavaScript: jest.fn(),
   };
   return mockModule;
 });
@@ -33,5 +36,10 @@ describe('ExpoLeafletModule (Native)', () => {
   it('setValueAsync should be callable', async () => {
     await ExpoLeafletModule.setValueAsync('test-value');
     expect(ExpoLeafletModule.setValueAsync).toHaveBeenCalledWith('test-value');
+  });
+
+  it('should have event listener methods', () => {
+    expect(typeof ExpoLeafletModule.addListener).toBe('function');
+    expect(typeof ExpoLeafletModule.removeListeners).toBe('function');
   });
 });

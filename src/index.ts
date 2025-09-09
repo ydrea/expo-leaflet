@@ -1,5 +1,8 @@
-// Reexport the native module. On web, it will be resolved to ExpoLeafletModule.web.ts
-// and on native platforms to ExpoLeafletModule.ts
-export { default } from './ExpoLeafletModule';
+// Export the unified module
+export { PI, hello, setValueAsync } from './ExpoLeafletModule';
+
+// Export the unified view component
 export { default as ExpoLeafletView } from './ExpoLeafletView';
-export * from  './ExpoLeaflet.types';
+
+// Export types
+export * from './ExpoLeaflet.types';

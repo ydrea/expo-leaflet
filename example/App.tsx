@@ -2,6 +2,9 @@ import { useEvent } from 'expo';
 import ExpoLeaflet, { ExpoLeafletView } from 'expo-leaflet';
 import { Button, SafeAreaView, ScrollView, Text, View } from 'react-native';
 
+
+const TypedExpoLeafletView = ExpoLeafletView as React.ComponentType<any>;
+
 export default function App() {
   const onChangePayload = useEvent(ExpoLeaflet, 'onChange');
 
@@ -27,9 +30,12 @@ export default function App() {
           <Text>{onChangePayload?.value}</Text>
         </Group>
         <Group name="Views">
-          <ExpoLeafletView
+          <TypedExpoLeafletView
             url="https://www.example.com"
-            onLoad={({ nativeEvent: { url } }) => console.log(`Loaded: ${url}`)}
+            // onLoad={({ nativeEvent: { url: string } }) => console.log(`Loaded: ${url}`)}
+            onLoad={({ nativeEvent }: { nativeEvent: { url: string } }) => 
+              console.log(`Loaded: ${nativeEvent.url}`)
+          }
             style={styles.view}
           />
         </Group>

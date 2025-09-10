@@ -33,10 +33,12 @@
   "author": "ydrea <ydrea.wrld@gmail.com> (ydrea)",
   "license": "MIT",
   "dependencies": {
+    "@expo/metro-runtime": "~5.0.4",
     "leaflet": "^1.9.4",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "@expo/metro-runtime": "~5.0.4"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-native-web": "^0.20.0",
+    "react-native-webview": "^13.13.5"
   },
   "devDependencies": {
     "@expo/config-plugins": "^10.1.2",
@@ -45,16 +47,17 @@
     "@testing-library/react-native": "^13.3.3",
     "@types/jest": "^30.0.0",
     "@types/leaflet": "^1.9.20",
-    "@types/react": "^19.1.12",
+    "@types/react": "~19.0.10",
     "@types/react-native": "^0.72.8",
     "expo": "^53.0.22",
     "expo-module-scripts": "^4.1.10",
     "jest": "^29.7.0",
-    "jest-expo": "^53.0.9",
-    "react-native": "^0.81.1",
-    "react-native-web": "^0.19.0",
-    "react-test-renderer": "^19.1.0",
-    "react-native-webview": "^13.16.0"
+    "jest-expo": "~53.0.10",
+    "metro": "^0.82.0",
+    "metro-config": "^0.82.0",
+    "metro-resolver": "^0.82.0",
+    "react-native": "0.79.5",
+    "react-test-renderer": "^19.0.0"
   },
   "browser": {
     "./build/ExpoLeafletView.js": "./build/ExpoLeafletView.web.js"
@@ -63,6 +66,6 @@
     "./build/ExpoLeafletView.js": "./build/ExpoLeafletView.js"
   },
   "peerDependencies": {
-    "react-native-webview": "^13.16.0"
-  }
+    "react-native-webview": "^13.13.5"
+  }   
 }

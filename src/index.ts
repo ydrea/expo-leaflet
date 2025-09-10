@@ -1,5 +1,5 @@
 // Export the unified module
-export { PI, hello, setValueAsync } from './ExpoLeafletModule';
+export { PI, hello, setValueAsync, addListener, removeAllListeners, getListenersCount } from './ExpoLeafletModule';
 
 // Export the unified view component
 export { default as ExpoLeafletView } from './ExpoLeafletView';

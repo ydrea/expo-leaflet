@@ -11,6 +11,8 @@ import {
   CircleOptions,
   MapEvent
 } from './ExpoLeaflet.types';
+import type { StyleProp, ViewStyle } from 'react-native';
+//
 
 // Fix for default markers in web
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -29,52 +31,65 @@ const ExpoLeafletViewWeb = React.forwardRef<LeafletMapRef, ExpoLeafletViewProps>
     const circles = useRef<Map<string, L.Circle>>(new Map());
 
     // Initialize map
-    useEffect(() => {
-      if (!mapRef.current || mapInstance.current) return;
+useEffect(() => {
+  if (!mapRef.current || mapInstance.current) return;
 
-      const map = L.map(mapRef.current).setView(
-        [options.center.lat, options.center.lng],
-        options.zoom
-      );
+  // Create default options
+  const defaultOptions = {
+    center: { lat: 51.505, lng: -0.09 },
+    zoom: 13,
+    minZoom: undefined,
+    maxZoom: undefined,
+    zoomControl: true,
+    scrollWheelZoom: true
+  };
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(map);
+  // Merge with provided options
+  const mergedOptions = { ...defaultOptions, ...options };
 
-      // Set map options
-      if (options.minZoom !== undefined) map.setMinZoom(options.minZoom);
-      if (options.maxZoom !== undefined) map.setMaxZoom(options.maxZoom);
-      if (options.zoomControl === false) map.removeControl(map.zoomControl);
-      if (options.scrollWheelZoom !== undefined) {
-        options.scrollWheelZoom ? map.scrollWheelZoom.enable() : map.scrollWheelZoom.disable();
-      }
+  const map = L.map(mapRef.current).setView(
+    [mergedOptions.center.lat, mergedOptions.center.lng],
+    mergedOptions.zoom
+  );
 
-      mapInstance.current = map;
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
 
-      // Handle map click events
-      if (onMapClick) {
-        const handleMapClick = (e: L.LeafletMouseEvent) => {
-          const event: MapEvent = {
-            type: 'mapClick',
-            latlng: e.latlng
-          };
-          onMapClick({ nativeEvent: event });
-        };
-        map.on('click', handleMapClick);
-      }
+  // Set map options
+  if (mergedOptions.minZoom !== undefined) map.setMinZoom(mergedOptions.minZoom);
+  if (mergedOptions.maxZoom !== undefined) map.setMaxZoom(mergedOptions.maxZoom);
+  if (mergedOptions.zoomControl === false) map.removeControl(map.zoomControl);
+  if (mergedOptions.scrollWheelZoom !== undefined) {
+    mergedOptions.scrollWheelZoom ? map.scrollWheelZoom.enable() : map.scrollWheelZoom.disable();
+  }
 
-      // Notify that map is ready
-      setTimeout(() => {
-        onMapReady?.();
-      }, 100);
+  mapInstance.current = map;
 
-      return () => {
-        if (mapInstance.current) {
-          mapInstance.current.remove();
-          mapInstance.current = null;
-        }
+  // Handle map click events
+  if (onMapClick) {
+    const handleMapClick = (e: L.LeafletMouseEvent) => {
+      const event: MapEvent = {
+        type: 'mapClick',
+        latlng: e.latlng
       };
-    }, [options, onMapReady, onMapClick]);
+      onMapClick({ nativeEvent: event });
+    };
+    map.on('click', handleMapClick);
+  }
+
+  // Notify that map is ready
+  setTimeout(() => {
+    onMapReady?.();
+  }, 100);
+
+  return () => {
+    if (mapInstance.current) {
+      mapInstance.current.remove();
+      mapInstance.current = null;
+    }
+  };
+}, [options, onMapReady, onMapClick]);
 
     useImperativeHandle(ref, () => ({
       setView: (center: LatLng, zoom: number) => {
@@ -151,22 +166,26 @@ const ExpoLeafletViewWeb = React.forwardRef<LeafletMapRef, ExpoLeafletViewProps>
           polygons.current.delete(id);
         }
       },
-      addCircle: (options: CircleOptions): string => {
-        if (!mapInstance.current) return '';
-        
-        const id = `circle_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        const circle = L.circle([options.center.lat, options.center.lng], {
-          radius: options.radius,
-          color: options.color || '#3388ff',
-          fillColor: options.fillColor || '#3388ff',
-          fillOpacity: options.fillOpacity || 0.2,
-          weight: options.weight || 3
-        }).addTo(mapInstance.current);
+  addCircle: (options: CircleOptions): string => {
+  if (!mapInstance.current) return '';
+  
+  const id = `circle_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  
+  // Use the options parameter (the function argument), not the component prop
+  const centerLat = options.center?.lat ?? 51.505;
+  const centerLng = options.center?.lng ?? -0.09;
+  
+  const circle = L.circle([centerLat, centerLng], {
+    radius: options.radius,
+    color: options.color || '#3388ff',
+    fillColor: options.fillColor || '#3388ff',
+    fillOpacity: options.fillOpacity || 0.2,
+    weight: options.weight || 3
+  }).addTo(mapInstance.current);
 
-        circles.current.set(id, circle);
-        return id;
-      },
-      removeCircle: (id: string) => {
+  circles.current.set(id, circle);
+  return id;
+},      removeCircle: (id: string) => {
         const circle = circles.current.get(id);
         if (circle && mapInstance.current) {
           mapInstance.current.removeLayer(circle);
@@ -188,11 +207,13 @@ const ExpoLeafletViewWeb = React.forwardRef<LeafletMapRef, ExpoLeafletViewProps>
       <View style={style}>
         <div 
           ref={mapRef} 
-          style={{ 
-            width: '100%', 
-            height: '100%',
-            ...(style ? (style as any) : {})
-          }} 
+     style={{ 
+        width: '100%', 
+        height: '100%',
+        minHeight: (style as ViewStyle).height || 400,
+        backgroundColor: '#f0f0f0', // ← Optional: visible background
+        ...(style ? (style as any) : {})
+      }} 
         />
       </View>
     );

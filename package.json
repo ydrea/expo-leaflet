@@ -1,6 +1,6 @@
 {
   "name": "expo-leaflet",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "use Leaflet map in Expo React Native",
   "homepage": "https://github.com/ydrea/expo-leaflet#readme",
   "main": "build/index.js",

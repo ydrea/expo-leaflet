@@ -32,8 +32,13 @@ const ExpoLeafletViewWeb = React.forwardRef<LeafletMapRef, ExpoLeafletViewProps>
 
     // Initialize map
 useEffect(() => {
-  if (!mapRef.current || mapInstance.current) return;
+  // if (!mapRef.current || mapInstance.current) return;
 
+  console.log('useEffect called, mapRef.current:', !!mapRef.current);
+  console.log('mapInstance.current:', !!mapInstance.current);
+  
+  if (!mapRef.current || mapInstance.current) return;
+  console.log('Initializing map...');
   // Create default options
   const defaultOptions = {
     center: { lat: 51.505, lng: -0.09 },
@@ -77,19 +82,50 @@ useEffect(() => {
     };
     map.on('click', handleMapClick);
   }
-
+////////////////////////////////////////////
   // Notify that map is ready
+
+  console.log('Setting up onMapReady timeout');
   setTimeout(() => {
+    console.log('onMapReady timeout fired');
     onMapReady?.();
   }, 100);
 
   return () => {
+    console.log('Cleanup called');
     if (mapInstance.current) {
       mapInstance.current.remove();
       mapInstance.current = null;
     }
   };
 }, [options, onMapReady, onMapClick]);
+
+  // setTimeout(() => {
+  //   onMapReady?.();
+  // }, 100);
+
+  // return () => {
+  //   if (mapInstance.current) {
+  //     mapInstance.current.remove();
+  //     mapInstance.current = null;
+  //   }
+// In the useEffect of ExpoLeafletView.web.tsx, replace the timeout:
+// Notify that map is ready - use requestAnimationFrame for better testability
+// const readyId = requestAnimationFrame(() => {
+//   onMapReady?.();
+// });
+
+// return () => {
+//   if (mapInstance.current) {
+//     mapInstance.current.remove();
+//     mapInstance.current = null;
+//   }
+//   cancelAnimationFrame(readyId);
+// };
+  
+// }, [options, onMapReady, onMapClick]);
+
+/////////////////////////////////////
 
     useImperativeHandle(ref, () => ({
       setView: (center: LatLng, zoom: number) => {
@@ -207,10 +243,11 @@ useEffect(() => {
       <View style={style}>
         <div 
           ref={mapRef} 
+      data-testid="expo-leaflet-map" // 
      style={{ 
         width: '100%', 
         height: '100%',
-        minHeight: (style as ViewStyle).height || 400,
+        minHeight: (style as ViewStyle)?.height || 400,
         backgroundColor: '#f0f0f0', // ← Optional: visible background
         ...(style ? (style as any) : {})
       }} 
